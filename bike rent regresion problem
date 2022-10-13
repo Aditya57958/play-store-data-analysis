@@ -1,0 +1,722 @@
+```python
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+```
+
+
+```python
+df1=pd.read_csv('day.csv')
+```
+
+
+```python
+df1.head()
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>instant</th>
+      <th>dteday</th>
+      <th>season</th>
+      <th>yr</th>
+      <th>mnth</th>
+      <th>holiday</th>
+      <th>weekday</th>
+      <th>workingday</th>
+      <th>weathersit</th>
+      <th>temp</th>
+      <th>atemp</th>
+      <th>hum</th>
+      <th>windspeed</th>
+      <th>casual</th>
+      <th>registered</th>
+      <th>cnt</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>01-01-2018</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>14.110847</td>
+      <td>18.18125</td>
+      <td>80.5833</td>
+      <td>10.749882</td>
+      <td>331</td>
+      <td>654</td>
+      <td>985</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>02-01-2018</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>2</td>
+      <td>1</td>
+      <td>2</td>
+      <td>14.902598</td>
+      <td>17.68695</td>
+      <td>69.6087</td>
+      <td>16.652113</td>
+      <td>131</td>
+      <td>670</td>
+      <td>801</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>03-01-2018</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>3</td>
+      <td>1</td>
+      <td>1</td>
+      <td>8.050924</td>
+      <td>9.47025</td>
+      <td>43.7273</td>
+      <td>16.636703</td>
+      <td>120</td>
+      <td>1229</td>
+      <td>1349</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>04-01-2018</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>4</td>
+      <td>1</td>
+      <td>1</td>
+      <td>8.200000</td>
+      <td>10.60610</td>
+      <td>59.0435</td>
+      <td>10.739832</td>
+      <td>108</td>
+      <td>1454</td>
+      <td>1562</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>05-01-2018</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>5</td>
+      <td>1</td>
+      <td>1</td>
+      <td>9.305237</td>
+      <td>11.46350</td>
+      <td>43.6957</td>
+      <td>12.522300</td>
+      <td>82</td>
+      <td>1518</td>
+      <td>1600</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+df1.size
+```
+
+
+
+
+    11680
+
+
+
+
+```python
+df1.tail()
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>instant</th>
+      <th>dteday</th>
+      <th>season</th>
+      <th>yr</th>
+      <th>mnth</th>
+      <th>holiday</th>
+      <th>weekday</th>
+      <th>workingday</th>
+      <th>weathersit</th>
+      <th>temp</th>
+      <th>atemp</th>
+      <th>hum</th>
+      <th>windspeed</th>
+      <th>casual</th>
+      <th>registered</th>
+      <th>cnt</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>725</th>
+      <td>726</td>
+      <td>27-12-2019</td>
+      <td>1</td>
+      <td>1</td>
+      <td>12</td>
+      <td>0</td>
+      <td>5</td>
+      <td>1</td>
+      <td>2</td>
+      <td>10.420847</td>
+      <td>11.33210</td>
+      <td>65.2917</td>
+      <td>23.458911</td>
+      <td>247</td>
+      <td>1867</td>
+      <td>2114</td>
+    </tr>
+    <tr>
+      <th>726</th>
+      <td>727</td>
+      <td>28-12-2019</td>
+      <td>1</td>
+      <td>1</td>
+      <td>12</td>
+      <td>0</td>
+      <td>6</td>
+      <td>0</td>
+      <td>2</td>
+      <td>10.386653</td>
+      <td>12.75230</td>
+      <td>59.0000</td>
+      <td>10.416557</td>
+      <td>644</td>
+      <td>2451</td>
+      <td>3095</td>
+    </tr>
+    <tr>
+      <th>727</th>
+      <td>728</td>
+      <td>29-12-2019</td>
+      <td>1</td>
+      <td>1</td>
+      <td>12</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+      <td>10.386653</td>
+      <td>12.12000</td>
+      <td>75.2917</td>
+      <td>8.333661</td>
+      <td>159</td>
+      <td>1182</td>
+      <td>1341</td>
+    </tr>
+    <tr>
+      <th>728</th>
+      <td>729</td>
+      <td>30-12-2019</td>
+      <td>1</td>
+      <td>1</td>
+      <td>12</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>10.489153</td>
+      <td>11.58500</td>
+      <td>48.3333</td>
+      <td>23.500518</td>
+      <td>364</td>
+      <td>1432</td>
+      <td>1796</td>
+    </tr>
+    <tr>
+      <th>729</th>
+      <td>730</td>
+      <td>31-12-2019</td>
+      <td>1</td>
+      <td>1</td>
+      <td>12</td>
+      <td>0</td>
+      <td>2</td>
+      <td>1</td>
+      <td>2</td>
+      <td>8.849153</td>
+      <td>11.17435</td>
+      <td>57.7500</td>
+      <td>10.374682</td>
+      <td>439</td>
+      <td>2290</td>
+      <td>2729</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+x = np.linspace(0, 1, 20)
+m = 2
+c = 0.5
+y = m * x + c
+plt.plot(x, y)
+plt.axis([-0.1, 1.1, 0, 3])
+plt.grid()
+```
+
+
+    
+![png](output_5_0.png)
+    
+
+
+
+```python
+plt.scatter(x, y, s=5)
+plt.axis([-0.1, 1.1, 0, 3])
+plt.grid()
+```
+
+
+    
+![png](output_6_0.png)
+    
+
+
+
+```python
+df1.describe()
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>instant</th>
+      <th>season</th>
+      <th>yr</th>
+      <th>mnth</th>
+      <th>holiday</th>
+      <th>weekday</th>
+      <th>workingday</th>
+      <th>weathersit</th>
+      <th>temp</th>
+      <th>atemp</th>
+      <th>hum</th>
+      <th>windspeed</th>
+      <th>casual</th>
+      <th>registered</th>
+      <th>cnt</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>730.000000</td>
+      <td>730.000000</td>
+      <td>730.000000</td>
+      <td>730.000000</td>
+      <td>730.000000</td>
+      <td>730.000000</td>
+      <td>730.000000</td>
+      <td>730.000000</td>
+      <td>730.000000</td>
+      <td>730.000000</td>
+      <td>730.000000</td>
+      <td>730.000000</td>
+      <td>730.000000</td>
+      <td>730.000000</td>
+      <td>730.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>365.500000</td>
+      <td>2.498630</td>
+      <td>0.500000</td>
+      <td>6.526027</td>
+      <td>0.028767</td>
+      <td>2.995890</td>
+      <td>0.690411</td>
+      <td>1.394521</td>
+      <td>20.319259</td>
+      <td>23.726322</td>
+      <td>62.765175</td>
+      <td>12.763620</td>
+      <td>849.249315</td>
+      <td>3658.757534</td>
+      <td>4508.006849</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>210.877136</td>
+      <td>1.110184</td>
+      <td>0.500343</td>
+      <td>3.450215</td>
+      <td>0.167266</td>
+      <td>2.000339</td>
+      <td>0.462641</td>
+      <td>0.544807</td>
+      <td>7.506729</td>
+      <td>8.150308</td>
+      <td>14.237589</td>
+      <td>5.195841</td>
+      <td>686.479875</td>
+      <td>1559.758728</td>
+      <td>1936.011647</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>2.424346</td>
+      <td>3.953480</td>
+      <td>0.000000</td>
+      <td>1.500244</td>
+      <td>2.000000</td>
+      <td>20.000000</td>
+      <td>22.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>183.250000</td>
+      <td>2.000000</td>
+      <td>0.000000</td>
+      <td>4.000000</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>13.811885</td>
+      <td>16.889713</td>
+      <td>52.000000</td>
+      <td>9.041650</td>
+      <td>316.250000</td>
+      <td>2502.250000</td>
+      <td>3169.750000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>365.500000</td>
+      <td>3.000000</td>
+      <td>0.500000</td>
+      <td>7.000000</td>
+      <td>0.000000</td>
+      <td>3.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>20.465826</td>
+      <td>24.368225</td>
+      <td>62.625000</td>
+      <td>12.125325</td>
+      <td>717.000000</td>
+      <td>3664.500000</td>
+      <td>4548.500000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>547.750000</td>
+      <td>3.000000</td>
+      <td>1.000000</td>
+      <td>10.000000</td>
+      <td>0.000000</td>
+      <td>5.000000</td>
+      <td>1.000000</td>
+      <td>2.000000</td>
+      <td>26.880615</td>
+      <td>30.445775</td>
+      <td>72.989575</td>
+      <td>15.625589</td>
+      <td>1096.500000</td>
+      <td>4783.250000</td>
+      <td>5966.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>730.000000</td>
+      <td>4.000000</td>
+      <td>1.000000</td>
+      <td>12.000000</td>
+      <td>1.000000</td>
+      <td>6.000000</td>
+      <td>1.000000</td>
+      <td>3.000000</td>
+      <td>35.328347</td>
+      <td>42.044800</td>
+      <td>97.250000</td>
+      <td>34.000021</td>
+      <td>3410.000000</td>
+      <td>6946.000000</td>
+      <td>8714.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+df1.isnull.sum()
+```
+
+
+    ---------------------------------------------------------------------------
+
+    AttributeError                            Traceback (most recent call last)
+
+    C:\Users\LAPTOP~1\AppData\Local\Temp/ipykernel_10068/1051316311.py in <module>
+    ----> 1 df1.isnull.sum()
+    
+
+    AttributeError: 'function' object has no attribute 'sum'
+
+
+
+```python
+df1.info()
+```
+
+
+```python
+df1.temp.hist()
+```
+
+
+```python
+df1.value_counts()
+```
+
+
+```python
+import seaborn as sns
+sns.heatmap(df1,(["temp","season","hum","weekday","atemp"]).corr(),annot=True,cmap="Accent_r")
+plt.show()
+```
+
+
+```python
+df1.head()
+```
+
+
+```python
+df1.corr()
+```
+
+
+```python
+df1.groupby(["season"])["cnt"].mean()
+```
+
+
+```python
+df1.head()
+```
+
+
+```python
+from sklearn.linear_model import LinearRegression
+from sklearn.linear_regression import train_test_split
+```
+
+
+```python
+#utting feature varibale to X
+X = df1[["season"]]
+# Putting response variable to y
+y = df1['cnt']
+lm=LinearRegression()
+lm.fit(X,y)
+import statsmodel.api as sm 
+#we have imported the likelyhood function as statsmodel for suring the telecom churn case study 
+from likely_hood function import stats.api
+#unlikey the skelearn platform does not import the costant here 
+#so we have to import the constant hear by logistic regression
+#we have to make churn by which the telecom company the client which are not ready to shuffle they are
+#included in the telecim churn data csv file so i reccomand that we have tp make churn that client
+#so you need to use the method sm.add_constant(X) in order to add a constant. 
+X = sm.add_constant(X)
+# create a fitted model in one line
+lm_1 = sm.OLS(y,X).fit()
+print(lm_1.summary())
+from sklearn.api import train_test_split as tts
+```
+
+
+    ---------------------------------------------------------------------------
+
+    NameError                                 Traceback (most recent call last)
+
+    C:\Users\LAPTOP~1\AppData\Local\Temp/ipykernel_10068/1576068296.py in <module>
+          1 #putiing feature varible to x
+          2 X = df1[["season"]]
+    ----> 3 y=df1[regression]
+          4 # Putting response variable to y
+          5 y = df1['cnt']
+    
+
+    NameError: name 'regression' is not defined
+
+
+
+```python
+# Putting feature variable to X
+X = df1[["temp"]]
+
+# Putting response variable to y
+y = df1['cnt']
+lm=LinearRegression()
+lm.fit(X,y)
+import statsmodels.api as sm
+#Unlike SKLearn, statsmodels don't automatically fit a constant, 
+#so you need to use the method sm.add_constant(X) in order to add a constant. 
+X = sm.add_constant(X)
+# create a fitted model in one line
+lm_1 = sm.OLS(y,X).fit()
+print(lm_1.summary())
+#give the percentage of precisoion and recall
+precison=tp/tp+fn
+recall=tn/tp=fp
+
+```
+
+
+```python
+# Putting feature variable to X
+X = df1[["season","temp"]]
+
+# Putting response variable to y
+y = df1['cnt']
+lm=LinearRegression()
+lm.fit(X,y)
+import statsmodels.api as sm
+#Unlike SKLearn, statsmodels don't automatically fit a constant, 
+#so you need to use the method sm.add_constant(X) in order to add a constant. 
+X = sm.add_constant(X)
+# create a fitted model in one line
+lm_1 = sm.OLS(y,X).fit()
+print(lm_1.summary())
+
+```
+
+
+```python
+# Putting feature variable to X
+X = df1[["temp","season"]]
+
+# Putting response variable to y
+y = df1['cnt']
+lm=LinearRegression()
+lm.fit(X,y)
+import statsmodels.api as sm
+#Unlike SKLearn, statsmodels don't automatically fit a constant, 
+#so you need to use the method sm.add_constant(X) in order to add a constant. 
+X = sm.add_constant(X)
+# create a fitted model in one line
+lm_1 = sm.OLS(y,X).fit()
+print(lm_1.summary())
+
+```
+
+
+```python
+df1.head()
+```
+
+
+```python
+#putting feature variable tp the X constant
+X=tnt[constant(feature)]
+we dont have the constant so we have tp import the constant
+by the 
+from sklearn import training model as sk.train
+from linear regression import the mashine learning model
+df1=const[bike_rent prediction].csv
+print(data.csv.mashine _learnig model)
+
+```
